@@ -15,10 +15,12 @@ public class StreamTest {
     public static void CreatePersons() {
         Person person1 = new Person("Vasya","Pupkin", 25, Sex.MAN, Education.HIGHER);
         Person person2 = new Person("Fedya","Kudrov", 30, Sex.MAN, Education.HIGHER);
-        Person person3 = new Person("Maria","Petrova", 16, Sex.WOMAN, Education.HIGHER);
+        Person person3 = new Person("Keks","Vasilyev", 10, Sex.MAN, Education.HIGHER);
+        Person person4 = new Person("Maria","Petrova", 16, Sex.WOMAN, Education.HIGHER);
         persons.add(person1);
         persons.add(person2);
         persons.add(person3);
+        persons.add(person4);
     }
 
     @Test
@@ -32,6 +34,14 @@ public class StreamTest {
     public void getListWorkableTest() {
         List<Person> list = Main.getListWorkable(persons, Sex.MAN, 65);
         Assertions.assertEquals(list.size(), 2);
+    }
+
+    @Test
+    public void getListFamilySolderTest(){
+        List<String> list = Main.getListFamilySolder(persons);
+        Assertions.assertTrue(list.contains("Pupkin"));
+        Assertions.assertFalse(list.contains("Kudrov"));
+        Assertions.assertFalse(list.contains("Vasilyev"));
     }
 
 
