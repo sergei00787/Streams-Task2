@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class StreamTest {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
-    public Main main = new Main();
+public class StreamTest {
     public static Collection<Person> persons = new ArrayList<>();
 
     @BeforeAll
     public static void CreatePersons() {
         Person person1 = new Person("Vasya","Pupkin", 25, Sex.MAN, Education.HIGHER);
-        Person person2 = new Person("Fedya","Kudrov", 30, Sex.MAN, Education.HIGHER);
+        Person person2 = new Person("Fedya","Kudrov", 27, Sex.MAN, Education.HIGHER);
         Person person3 = new Person("Keks","Vasilyev", 10, Sex.MAN, Education.HIGHER);
         Person person4 = new Person("Maria","Petrova", 16, Sex.WOMAN, Education.HIGHER);
         persons.add(person1);
@@ -24,24 +25,28 @@ public class StreamTest {
     }
 
     @Test
-    public void getRandomPersonsListTest() {
+    public void getRandomPersonsListReturnIsNotEmptyList() {
         Collection<Person> persons =  Main.getRandomPersonsList();
-        Assertions.assertTrue(persons != null);
-        Assertions.assertFalse(persons.isEmpty());
+        assertThat(persons, is(not(nullValue())));
+        assertThat(persons, is(not(empty())));
     }
 
     @Test
-    public void getListWorkableTest() {
+    public void getListWorkableExpectedSizeEquals2() {
         List<Person> list = Main.getListWorkable(persons, Sex.MAN, 65);
-        Assertions.assertEquals(list.size(), 2);
+        assertThat(list, hasSize(2));
     }
 
     @Test
-    public void getListFamilySolderTest(){
+    public void getListFamilySolderHasItems(){
         List<String> list = Main.getListFamilySolder(persons);
-        Assertions.assertTrue(list.contains("Pupkin"));
-        Assertions.assertFalse(list.contains("Kudrov"));
-        Assertions.assertFalse(list.contains("Vasilyev"));
+        assertThat(list, hasItems("Pupkin","Kudrov"));
+        assertThat(list, not(hasItems("Vasilyev", "Petrova")));
+    }
+
+    @AfterAll
+    public static void clearPersons() {
+        persons.clear();
     }
 
 
